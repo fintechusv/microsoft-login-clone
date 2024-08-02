@@ -1,22 +1,7 @@
 /api
-  - index.py
-/app
-  - /login
-    - page.tsx
-  - /dashboard
-    - page.tsx
-  - favicon.ico
-  - globals.css
-  - layout.tsx
-  - page.tsx
-  /account
-    - page.tsx
-  /debounce
-    - page.tsx
-  /email-verifier
-    - page.tsx
-  /api/docs
-    - page.tsx
-/public
-  - next.svg
-  - vercel.svg
+- /assets
+- /templates
+- index.py
+.gitignore
+requirements.txt
+vercel.json
