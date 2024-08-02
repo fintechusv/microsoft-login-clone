@@ -11,6 +11,15 @@ app = Flask(__name__, static_folder='assets')
 def home():
     return render_template('index.html')
 
+
+
+# Serverside operations (Proper encapsulation of the frontend formdata handlings)
+
+# /api/loginuser
+# Use the formdata inside the dashboardpage
+
+
+
 # Route for displaying the dashboard
 @app.route('/dashboard')
 def test():
@@ -21,11 +30,6 @@ def test():
 def result():
     scores = {'phy': 50, 'che': 60, 'maths': 70}
     return render_template('result.html', result=scores)
-
-
-# Serverside operations (Proper encapsulation of the frontend formdata handlings)
-
-
 
 
 
