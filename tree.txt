@@ -1,6 +1,10 @@
 /api
   - index.py
 /app
+  - /login
+    - page.tsx
+  - /dashboard
+    - page.tsx
   - favicon.ico
   - globals.css
   - layout.tsx
