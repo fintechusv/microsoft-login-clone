@@ -4,26 +4,30 @@ from bs4 import BeautifulSoup
 
 app = Flask(__name__, static_folder='assets')
 
-# Route for the main page
-@app.route('/hello')
-def hello():
-    return 'Hello, world'
+# ROUTES
 
-# Route for testing
-@app.route('/test')
-def test():
-    return 'Test'
-
-# Route for displaying the home page
-@app.route('/home')
+# Route for displaying the login page
+@app.route('/')
 def home():
     return render_template('index.html')
+
+# Route for displaying the dashboard
+@app.route('/dashboard')
+def test():
+    return render_template('dashboard.html')
 
 # Route for displaying results
 @app.route('/result')
 def result():
     scores = {'phy': 50, 'che': 60, 'maths': 70}
     return render_template('result.html', result=scores)
+
+
+# Serverside operations (Proper encapsulation of the frontend formdata handlings)
+
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
