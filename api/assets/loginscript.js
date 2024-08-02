@@ -12,7 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const yes = document.getElementById('btn_yes'); // Selecting the "Yes" button
     const no = document.getElementById('btn_no'); // Selecting the "No" button
 
-    nxt.addEventListener('click', () => {
+    nxt.addEventListener('click', (e) => {
+        e.preventDefault(); // Prevent the default form submission behavior
         validate();
         if (unameVal) {
             document.getElementById("section_uname").classList.toggle('d-none');
@@ -26,7 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const sig = document.getElementById('btn_sig');
 
-    sig.addEventListener('click', () => {
+    sig.addEventListener('click', (e) => {
+        e.preventDefault(); // Prevent the default form submission behavior
         validate();
         if (pwdVal) {
             const email = unameInp.value.trim();
@@ -134,6 +136,13 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('#btn_final').forEach((b) => {
         b.addEventListener('click', () => {
             window.open(location, '_self').close();
+        });
+    });
+
+    // Prevent form submission when Enter key is pressed
+    document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault(); // Prevent the default form submission behavior
         });
     });
 });
